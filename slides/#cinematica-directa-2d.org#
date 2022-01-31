@@ -1,0 +1,76 @@
+#+OPTIONS: toc:nil
+# #+LaTeX_CLASS: koma-article 
+
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation,aspectratio=169]
+#+OPTIONS: H:2
+
+#+LaTex_HEADER: \usepackage{khpreamble}
+#+LaTex_HEADER: \usepackage{amssymb}
+#+LaTex_HEADER: \usepgfplotslibrary{groupplots}
+#+LaTex_HEADER: \newcommand*{\shift}{\ensuremath{\operatorname{q}}}
+
+
+#+title: Cinemática directa en 2D
+# #+date: 2021-06-28
+
+* What do I want the students to understand?			   :noexport:
+  - Pose in 2D as product of transformations
+
+
+* Which activities will the students do?			   :noexport:
+  1. Derive transformation for one degree of freedom
+  2. Writing code for 2D manipulator
+  3. 
+
+* Repeticción
+** Pose en 2D
+
+\begin{center}
+\includegraphics[height=0.5\textheight]{../figures/Corke-fig2.6.png}
+
+\footnotesize Peter Corke \emph{Robotics, vision and control}
+\end{center}
+
+* Manipulador como cadena de transfomraciones
+
+** Transformación básica - rotación
+
+\begin{center}
+% \includegraphics[height=0.5\textheight]{../figures/MLS-fig2.2.png}
+
+\footnotesize Murray, Li and Sastry \emph{A mathematical introduction to robotic manipulation}
+\end{center}
+
+** Transformación básica - desplacimiento
+
+\begin{center}
+% \includegraphics[height=0.5\textheight]{../figures/MLS-fig2.2.png}
+
+\footnotesize Murray, Li and Sastry \emph{A mathematical introduction to robotic manipulation}
+\end{center}
+
+** Cadena de transformaciones
+
+** Ejercicio - Articulación prismática y articulación revolutaria
+
+\begin{center}
+ \includegraphics[height=0.8\textheight]{../figures/2d-2dof-prismatic-revolute.pdf}
+\end{center}
+
+*** Notes                                                          :noexport:
+
+En configuración default, q1=0, q2=0
+
+g_t = [I l1;0;1]
+
+g = g_1 * g_2 * g_t
+
+g_1 = [1 0 q1
+       0 1 0
+       0 0 1]
+
+R_2 = [c2 -s2  
+      s2  c2]
+d_2 = p_2 - R_2 p_2 = (I - R2) p_2 
+g_2 = [R_2 d_2; 0 1]
