@@ -1,0 +1,103 @@
+#+OPTIONS: toc:nil
+# #+LaTeX_CLASS: koma-article 
+
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation,aspectratio=169]
+#+OPTIONS: H:2
+
+#+LaTex_HEADER: \usepackage{khpreamble}
+#+LaTex_HEADER: \usepackage{amssymb}
+#+LaTex_HEADER: \usepgfplotslibrary{groupplots}
+#+LaTex_HEADER: \newcommand*{\shift}{\ensuremath{\operatorname{q}}}
+
+
+#+title: Cinemática directa en 3D
+# #+date: 2021-06-28
+
+* What do I want the students to understand?			   :noexport:
+  - Pose in 3D as exponential of a twist
+  - Pose in 3D as product of transformations
+
+
+* Which activities will the students do?			   :noexport:
+  1. Derive transformation for one degree of freedom
+  2. Writing code for 3D manipulator
+  3. 
+
+* Repetición
+** Manipulador en 2D
+
+\begin{center}
+ \includegraphics[height=0.8\textheight]{../figures/2d-2dof-prismatic-revolute.pdf}
+\end{center}
+
+*** Notes                                                          :noexport:
+- Nos interesa la transformación entre el sistema {E} y {W}.
+  ^Wg_E = ^Wg_L1 ^L1g_L2 ^L2g_E
+- El sistema de referencia "local" de cada enlace coincide con el sistem global en
+  la configuración de referencia (cada variable = 0)
+- Entonces el analisis que hicimos para los dos transformaciones básicos. se puede aplicar directamente
+
+* Exponential map
+
+** Rotación sobre un eje
+
+
+\begin{center}
+ \includegraphics[height=0.7\textheight]{../figures/MLS-fig2.11.png}\\
+{\tiny From Murray, Li, Sastry}
+\end{center}
+
+*** Notes                                                          :noexport:
+- Vamos a analizar esta situación usando el mismo proceduremiento que en la sesión pasada.
+- *Situación* Hay dos eslabónes, A y B. Con respeto a A, B gira sobre un eje con cierta posición y dirección.
+  - La dirección está dado por el vector \omega, que es un vector unitario.
+  - La posición está dado por el vector de coordinados q. Digo /vector de coordinados/ porque es un vector
+    que nos da la posición de un punto en el eje empezando en el origen de A.
+    Recuerde: punto (origen) más vector da otro punto.
+    Este punto en el eje puede ser cualquier punto en el eje.
+- *Velocidad de un cuerpo rigido* con respeto a otro cuerpo o otro marco de referencia.
+  - Dado por dos vectores, \omega \dot{\theta} y v.
+  - \dot{\theta}\omega nos da la velocidad angular.
+    Es un vector en la dirección del eje de giro del cuerpo cuyo magnitúd nos da la
+    velocidad angular, normalmente en rad/s. Regla de la mano derecha. La velocidad angular es un propiedad
+    del cuerpo entero, no de un punto en especifico.
+  - v nos da la velocidad lineal de cierta punto de referencia en el cuerpo. Muchas veces es la velocidad lineal
+    del origen de un marco de referencia en el cuerpo. Pero en realidad puede ser la velocidad lineal de
+    cualquier punto, bien definido, en el cuerpo.
+- *Transformación rígida* Suponemos que el cuerpo B gira con una velocidad constante con magnitud unitaria.
+  - La velocidad con respeto a A, de cierto punto en B: p(t) es dado por
+    d/dt p(t) = \omega x (p(t) - q) = \hat{\omega}p - \omega x q = \hat\omega p + v.
+    - *actividad*: v es la velocidad de un punto. Cuál punto?
+  - En forma homógena:
+    d/dt \bar p = [   ] [p;1]. *actividad* Llena la matriz.
+  - Integrando la velocidad, usando t = \theta,  nos da
+    \bar p(\theta) = exp{\hat\xi \theta} \bar p
+  - En realidad, se calcula la exponencial de esa matriz de forma
+    exp{\hat\xi \theta} = [ R_ab, (I-R_ab)(v x \omega); 0, 1], dónde
+    R_ab = \exp{\hat\omega \theta} = I + sin\theta \hat\omega + (1-cos\theta)(\hat\omega)^2
+  - La transformación g = exp(.) transforma puntos del cuerpo B, dado en marco A cuando B está en su
+    pose de referencia, \theta=0, a su posición, en A, después de un giro de un ángulo \theta sobre el eje.
+  - *pero* Como el marco B y A /coinciden/ en la configuración de referencia, esta transformación tambén es
+    la transformación que transforma puntos dado en B a sus posición en A.  
+- *Generalizando*
+  - Lo que vimos fue cómo encontrar la transformación entre eslabón A y B, dado que B gira sobre un eje fija en A y B.
+  - Si A tambien gira, entonces la transformación completa entre B y S es dado por
+    g_sb(\theta_1, \theta_2) = g_sa(\theta_1) g_ab(\theta_2).
+    Y así succesivamente.
+- *Articualación prismática*
+  - En este caso la velocidad (con respeto a A) de todos los puntos de B es la misma. 
+    d/dt p(t) = v = 0 p + v
+    d/dt \bar p = [0 v;0 1] \bar p
+  - Integrando da
+    \bar p = exp{\hat\xi \theta}.
+    
+
+
+** Manipulador en 3D
+
+
+\begin{center}
+ \includegraphics[height=0.8\textheight]{../figures/3d-3dof-revolute}
+\end{center}
+

@@ -10,7 +10,7 @@
     "tikz")
    (TeX-add-symbols
     '("robotbase" 2)
-    '("refframe" 3)
+    '("refframe" 4)
     '("tool" 2)
     '("slidelink" 4)
     '("link" 4)))

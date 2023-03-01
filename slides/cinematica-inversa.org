@@ -1,0 +1,40 @@
+#+OPTIONS: toc:nil
+# #+LaTeX_CLASS: koma-article 
+
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [presentation,aspectratio=169]
+#+OPTIONS: H:2
+
+#+LaTex_HEADER: \usepackage{khpreamble}
+#+LaTex_HEADER: \usepackage{amssymb}
+#+LaTex_HEADER: \usepgfplotslibrary{groupplots}
+#+LaTex_HEADER: \newcommand*{\shift}{\ensuremath{\operatorname{q}}}
+
+
+#+title: Cinemática inversa
+# #+date: 2021-06-28
+
+* What do I want the students to understand?			   :noexport:
+  - How to solve standard cases
+
+
+* Which activities will the students do?			   :noexport:
+  1. Derive transformation for one degree of freedom
+  2. Writing code
+  3. 
+
+* Repetición
+
+* 6Dof
+
+** Típico manipulador de 6 gdl
+Divide and conquer
+1. tcp en el posición deseado
+   1. Solve for the base angle, since this determines the vertical plane in which the robot operates.
+   2. In this vertical plane. Draw the 2dof linkage. Solve using geometry.
+2. Efector final en orientación correcta
+   1. Escribe matriz de rotación de los 3 gdl del muñeco.
+   2. Compara con la matriz de rotación deseada
+      Rat = inv(Rba)Rbt = (R1 R2 R3)^{-1} R1 R2 R3 R4 R5 R6 = R4 R5 R6
+** 
+

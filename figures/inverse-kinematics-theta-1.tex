@@ -1,0 +1,72 @@
+\documentclass[border=10pt,varwidth]{standalone}
+\usepackage{tikz}
+ \usetikzlibrary{patterns}
+
+  \newcommand*{\link}[4]{%
+  \draw[thick, color=#3, rounded corners] (-3pt, -#2/2) rectangle (#1+3pt, #2/2);
+  %\draw (0,0) circle[radius=1pt];
+  %\draw (#1, 0) circle[radius=1pt];
+  \node at (#1/2, 1.3*#2) {#4};}
+
+
+\begin{document}
+
+\pgfmathsetmacro{\dfour}{1}
+\pgfmathsetmacro{\phi}{60}
+\pgfmathsetmacro{\px}{0}
+\pgfmathsetmacro{\py}{\dfour}
+\pgfmathsetmacro{\pxx}{-sin(\phi)*\dfour}
+\pgfmathsetmacro{\pyy}{cos(\phi)*\dfour}
+
+\pgfmathsetmacro{\xxnollett}{cos(\phi)}
+\pgfmathsetmacro{\xynollett}{sin(\phi)}
+\pgfmathsetmacro{\pyy}{cos(\phi)*\dfour}
+
+
+
+\pgfmathsetmacro{\psi}{atan2(\pxx, \pyy)}
+
+\begin{tikzpicture}[scale=2,]
+ 
+  \draw[->, black!60] (-2, 0) to (4,0) node[right] {$y_0$};
+  \draw[->, black!60] (0,2) to (0,-3) node[below] {$x_0$};
+  \draw [black!40, domain=-180:180, samples=400] plot ({\dfour*cos(\x)}, {\dfour*sin(\x)});
+
+  \node[circle, fill=blue, inner sep=1pt] at (\py, -\px) {}; 
+  \node[circle, fill=blue, inner sep=1pt] at (\pyy, -\pxx) {}; 
+
+  \begin{scope}[rotate=\phi] 
+     \draw[->, blue!80] (-2, 0) to (3,0) node[right] {$y_1$};
+     \draw[->, blue!80] (0,2) to (0,-3) node[above] {$x_1 $};
+
+     \link{\dfour cm}{0.2 cm}{blue!16}{}
+
+     \begin{scope}[xshift=\dfour cm] 
+       \begin{scope}[rotate=-90]
+         \link{2 cm}{0.2 cm}{red!16}{}
+       \begin{scope}[xshift=2 cm] 
+         \link{1 cm}{0.2 cm}{green!16}{}
+       \end{scope}
+     \end{scope}
+     \end{scope}
+
+     \node[circle, fill=red, inner sep=1.5pt, pin=0:{($p_x,\,p_y$)}] at (\dfour, -3*\dfour) (wp) {}; 
+
+   \end{scope}
+
+   \draw (0,0) -- node[above left] {\small $a_0$} (\pyy,-\pxx);
+   \draw (wp) -- node[above right, pos=0.8, rotate=-30] {\small $a_2 = \sqrt{a_1^2 - a_0^2}$} (\pyy,-\pxx);
+   \draw (0,0) -- node[below left, pos=0.7, rotate=-12] {\small $a_1 = \sqrt{p_x^2 + p_y^2}$} node[coordinate, pos=0.4] (awp) {} node[coordinate, pos=0.22] (gwp) {} (wp);
+
+
+   \draw[->] (awp) arc [radius=1.2cm, start angle = -12, end angle = 0] node[pos=0.5, right] {$\varphi$};
+   \draw[->] (gwp) arc [radius=0.68cm, start angle = -12, end angle = 60] node[pos=0.5, right] {$\gamma$};
+
+   
+  \draw[->, red!70!black] (0,-2) arc [radius=2, start angle = -90, end angle = -90+\phi] node[pos=0.5, below] {$\theta_1$};
+  \draw[->, red!70!black] (0.5, 0) arc [radius=0.5, start angle = 0, end angle = \phi] node[pos=0.5, left] {$\theta_1$};
+
+%  \node at (2, -4) {$\cos\gamma = 
+  
+  \end{tikzpicture}
+\end{document}

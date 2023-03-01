@@ -1,0 +1,184 @@
+def O (0,0,0) % Origin
+% Joint states
+def q1 70 def q2 30 def q3 40
+% Segement lengths
+def l1 5.0 def l2 3
+% Segment radius
+def r1 0.15 def r2 r1
+% Joint lengths and radius
+def lj r1*2
+def rj r1
+
+% joint positons at zero configuration 
+def vj1 [0, 0, 0]
+def j1 (O) + [vj1] % Base joint
+def vj2 [vj1] + [0,0,l1]
+def j2 (O) + [vj2]
+def vl2 [l2, 0, 0]
+def tpc (j2) + [vl2]
+% Joint directions (at zero-configuration)
+def v1 [0,0,1] def v2 [0,1,0] def v3 [0,1,0]
+% View point
+def eye (8, 5, 5) 
+def look_at (0, 0, 0) 
+def up [0, 0, 1] % Up vector
+
+% Axes
+def axis_l 6
+def dx axis_l def dy axis_l def dz axis_l
+def ax (dx,0,0) % tips of the axes
+def ay (0,dy,0)
+def az (0,0,dz)
+ 
+def n_circle_segs 60
+
+def link1 {
+    def sweep_point1 (j1)+[r1, 0, l1-r1]
+    def transl  [0,0,-l1+2*r1]
+    def cross_section {
+        sweep [color=blue!40!black] { n_circle_segs<>, rotate (360/n_circle_segs, (j1), [0, 0, 1]) }
+              (sweep_point1)
+              } 
+    sweep [color=blue!80!black]{ 1, translate([transl]) }{cross_section}
+    %{cross_section}
+    %put {translate([transl])}{cross_section}
+    }
+
+def link2 {
+    def sweep_point2 (j2)+[l2,0,r2]
+    def transl  [-l2+r1,0,0]
+    def cross_section {
+        sweep[color=red!40!black] { n_circle_segs<>, rotate (360/n_circle_segs, (j2), [1, 0, 0]) }
+        (sweep_point2)
+        }
+    sweep [color=red!80!black]{ 1, translate([transl]) } {cross_section}
+    %{cross_section}
+    %put {translate([transl])}{cross_section}
+      }
+
+
+def joint {
+    def sweep_point (0,rj,0.7*lj)
+    def sweep_point_cap (0,rj+0.005,0.7*lj)
+    def transl [0,0,-1.4*lj]
+    def cross_section {
+        sweep[color=black!40] { n_circle_segs<>, rotate (360/n_circle_segs,  [0,0,1]) } (sweep_point)
+        }
+    %def cross_section_cap {
+    %    sweep[color=black!40] { n_circle_segs<>, rotate (360/n_circle_segs,  [0,0,1]) } (sweep_point_cap)
+    %    }
+    {cross_section}
+    put {translate([transl]+[0,0,-0.01])}{cross_section}
+    sweep [color=black!20]{ 1, translate([transl]) }{cross_section}
+    %put {translate([0,0, 0.03])} {sweep [color=black!40] {1, translate([0,0,0.03])}{cross_section_cap}}
+    }
+
+
+def joint2 {
+    put { rotate(90, [1,0,0]) then translate([vj1]) }{joint}
+    }
+
+def joint3 {
+    put { rotate(90, [1,0,0]) then translate([vj2]) }{joint}
+    }
+
+
+special|\tikzstyle{mypolygonstyle} = [fill=blue!80,fill opacity=0.8]|[lay=under]
+
+def axes {
+line[arrows=<->,style=thin](ax)(O)(ay)
+line[arrows=->,style=thin](O)(az)
+% repeat dotted as an overlay to hint at the hidden lines
+line[lay=over,style=dotted,style=thin](ax)(O)(ay)
+line[lay=over,style=dotted,style=thin](O)(az) }
+
+def T1 rotate( q1, (j1), [v1])
+def T2 rotate( q2, (j1), [v2])
+%def jT1 [[T1]]*(0,0,2)
+%def jT12 [[T2]]*(jT1)
+def T3 rotate( q3, (j2), [v3])
+
+def vT view((eye), (look_at), [up])
+def axT [[vT]]*(ax)
+def ayT [[vT]]*(ay)
+def azT [[vT]]*(az)
+special| \node[left] at #1 {\small $x$}; \node[right] at #2 {\small $y$}; \node[above] at #3 {\small $z$}; |
+    (axT)(ayT)(azT)
+
+def T12 [[T2]] then [[T1]]
+def T123 [[T3]] then [[T12]]
+def VT123 [[T123]] then [[vT]]
+def VT12 [[T12]] then [[vT]]
+def j1T [[T12]]*(j1)
+def j2T [[T123]]*(j2)
+def j1VT [[VT12]]*(j1)
+def j2VT [[VT123]]*(j2)
+def tpcT [[T123]]*(tpc)
+def tpcVT [[VT123]]*(tpc)
+def tpcTxyz [[T123]]*(tpc)
+def tpcTxy ((tpcTxyz)'x, (tpcTxyz)'y, 0)
+def tpcTxyV [[vT]]*(tpcTxy)
+def tpcTyz (0, (tpcTxyz)'y, (tpcTxyz)'z)
+def tpcTyzV [[vT]]*(tpcTyz)
+def tpcTx ((tpcTxyz)'x, 0, 0)
+def tpcTxV [[vT]]*(tpcTx)
+def tpcTy (0, (tpcTxyz)'y, 0)
+def tpcTyV [[vT]]*(tpcTy)
+def tpcTz (0, 0, (tpcTxyz)'z)
+def tpcTzV [[vT]]*(tpcTz)
+
+def v2T [[T12]]*[v2]
+def v3T [[T123]]*[v3]
+def tpcT12 [[T12]]*(tpc)
+def l2mid [[T123]]*(l2/2, 0, l1)
+def OT [[vT]]*(O)
+special| \draw[dashed, thin, gray] #1 to #2; | (j1VT)(j2VT)
+special| \draw[dashed, thin, gray] #1 to #2; | (j2VT)(tpcVT)
+special| \draw[dashed, gray] #1 to #2; | (OT)(tpcTxyV)
+special| \draw[dotted, thin, gray] #1 to #2; | (tpcVT)(tpcTxyV)
+special| \draw[dotted, thin, gray] #1 to #2; | (tpcTxyV)(tpcTyV)
+special| \draw[dotted, thin, gray] #1 to #2; | (tpcTxyV)(tpcTxV)
+special| \draw[dotted, thin, gray] #1 to #2; | (tpcVT)(tpcTyzV)
+special| \draw[dotted, thin, gray] #1 to #2; | (tpcTyzV)(tpcTyV)
+special| \draw[dotted, thin, gray] #1 to #2; | (tpcTyzV)(tpcTzV)
+special| \node[left] at #1 {\small $p_x$}; | (tpcTxV)
+special| \node[above] at #1 {\small $p_y$}; | (tpcTyV)
+special| \node[left] at #1 {\small $p_z$}; | (tpcTzV)
+
+
+def arc1 { sweep [color=gray] { 60, rotate (q1/60, [v1])} (2,0,0) }
+def arc2 { sweep [color=gray] { 60, rotate (q2/60, [v2T])} (0,0,2) }
+def arc3 { sweep [color=gray] { 60, rotate (-q3/60, (j2T), [v3T])} (l2mid) }
+
+def arcmid1 (rotate (q1/2, [v1]))*(2,0,0)
+def arcmid1vT [[vT]]*(arcmid1)
+def arcmid2 (rotate (q2/2, [v2T]))*(0,0,2)
+def arcmid2vT [[vT]]*(arcmid2)
+def arcmid3 (rotate (-q3/2, (j2T), [v3T]))*( (scale (0.9))*(l2mid))
+def arcmid3vT [[vT]]*(arcmid3)
+
+special| \node[below] at #1 {\small $\theta_1$}; | (arcmid1vT)
+special| \node[above] at #1 {\small $\theta_2$}; | (arcmid2vT)
+special| \node[right] at #1 {\small $\theta_3$}; | (arcmid3vT)
+
+def refline2 {line [line style=dotted, color=gray] (j2T)(tpcT12) }
+
+def link1T {
+    put { [[T2]] then [[T1]] } {link1}
+    }
+def joint2T {
+    put { [[T1]] } {joint2}
+    }
+def joint3T {
+    put { [[T2]] then [[T1]] } {joint3}
+    }
+def link2T {
+    put { [[T3]] then [[T2]] then [[T1]]} {link2}
+    }
+
+def robot { put { [[vT]] } { {joint}{joint2T}{link1T}{joint3T}{link2T}{axes}{arc1}{arc2}{refline2}{arc3} }
+}
+
+{robot}
+
+global { language tikz }

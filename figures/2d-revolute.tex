@@ -26,7 +26,7 @@
 \begin{document}
 
 \pgfmathsetmacro{\qtwo}{50}
-\pgfmathsetmacro{\xx}{1}
+\pgfmathsetmacro{\xx}{1.6}
 \pgfmathsetmacro{\yy}{0.6}
 \pgfmathsetmacro{\Ltwo}{2}
 \pgfmathsetmacro{\lwidth}{0.2}
@@ -38,6 +38,7 @@
   \draw[->] (0,-1) to (0,3) node[above] {$y$};
 
   \foreach \qq/\clr in {0/red!60!white, \qtwo/red!60!black} {
+  %\foreach \qq/\clr in {0/red!60!white } {
     \begin{scope}[xshift=\xx cm, yshift=\yy cm, rotate=\qq,]
       
       \link{\Ltwo cm}{\lwidth cm}{\clr}{}

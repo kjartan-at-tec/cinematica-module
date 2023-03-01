@@ -1,4 +1,4 @@
-% Created 2022-01-31 Mon 11:17
+% Created 2023-02-03 Fri 08:38
 % Intended LaTeX compiler: pdflatex
 \documentclass[presentation,aspectratio=169]{beamer}
 \usepackage[utf8]{inputenc}
@@ -18,13 +18,19 @@
 \usepackage{amssymb}
 \usepgfplotslibrary{groupplots}
 \newcommand*{\shift}{\ensuremath{\operatorname{q}}}
+\newcommand*{\vecref}[2]{\ensuremath{^#2 \vec{#1}}}
+\newcommand*{\pref}[2]{\ensuremath{^#2{#1}}}
+\newcommand*{\refsys}[1]{\ensuremath{\{#1\}}}
+\newcommand*{\refframe}[4]{%
+\draw[->, thick, #4] (0,0) to (#1, 0) node[right]{#2};
+\draw[->, thick, #4] (0,0) to (0, #1) node[above]{#3};}
 \usetheme{default}
 \author{Kjartan Halvorsen}
 \date{\today}
-\title{Cinemática - Representación de posición y orientación}
+\title{Pose en 2D}
 \hypersetup{
  pdfauthor={Kjartan Halvorsen},
- pdftitle={Cinemática - Representación de posición y orientación},
+ pdftitle={Pose en 2D},
  pdfkeywords={},
  pdfsubject={},
  pdfcreator={Emacs 26.3 (Org mode 9.4.6)}, 
@@ -34,60 +40,183 @@
 \maketitle
 
 \section{Intro}
-\label{sec:org0dc5881}
-\begin{frame}[label={sec:org66b469b}]{Definiciones}
+\label{sec:org502561a}
+\begin{frame}[label={sec:orgb89f12d}]{Definiciones}
 \begin{center}
 \includegraphics[height=0.5\textheight]{../figures/Corke-fig2.1.a.png}
+
 \footnotesize Peter Corke \emph{Robotics, vision and control}
 \end{center}
 \end{frame}
 
 
-\begin{frame}[label={sec:orgfe448e4}]{Uso de sistemas de referencia en robótica}
+\begin{frame}[label={sec:org32a8ed4}]{Uso de sistemas de referencia en robótica}
 \begin{center}
-\includegraphics[height=0.5\textheight]{../figure/Corke-fig2.4.png}
+\includegraphics[height=0.65\textheight]{../figures/Corke-fig2.4.png}
+
 \footnotesize Peter Corke \emph{Robotics, vision and control}
 \end{center}
 \end{frame}
 
 \section{Pose en 2D}
-\label{sec:orgfc749a6}
+\label{sec:orgf5160ed}
 
-\begin{frame}[label={sec:orga7e83f3}]{Pose en 2D}
+\begin{frame}[label={sec:org77d577e}]{Pose en 2D}
 \begin{center}
-\includegraphics[height=0.5\textheight]{../figures/Corke-fig2.6.png}
-\footnotesize Peter Corke \emph{Robotics, vision and control}
+\includegraphics[height=0.9\textheight]{../figures/2d-transform}
 \end{center}
 \end{frame}
 
-\begin{frame}[label={sec:orgbabc344}]{Ejemplo}
-\end{frame}
-
-
-\begin{frame}[label={sec:orgec0a6ab}]{Ejercicio}
-\end{frame}
-
-\begin{frame}[label={sec:orgcec3771}]{Programar}
-\end{frame}
-
-
-\section{Pose en 3D}
-\label{sec:orgf66be86}
-
-\begin{frame}[label={sec:org341c6ae}]{Rotación en 3D}
+\begin{frame}[label={sec:org76de18f}]{Pose en 2D}
+\begin{columns}
+\begin{column}{0.3\columnwidth}
 \begin{center}
-\includegraphics[height=0.5\textheight]{../figures/MLS-fig2.2.png}
-\footnotesize Murray, Li and Sastry \emph{A mathematical introduction to robotic manipulation}
+\includegraphics[height=0.6\textheight]{../figures/2d-transform}
 \end{center}
+\end{column}
+
+\begin{column}{0.7\columnwidth}
+\footnotesize
+
+El vector \(\vec{x_B}\) en sistema \refsys{A}:
+\[ \vec{x_B} = \cos\theta \vec{x_A} +\sin\theta\vec{y_A} =
+\begin{bmatrix}\vec{x_A} & \vec{y_A} \end{bmatrix} \begin{bmatrix} \cos\theta\\\sin\theta \end{bmatrix}\]
+\[ \vecref{x_B}{A} = \cos\theta \vecref{x_A}{A} +\sin\theta\vecref{y_A}{A} = \begin{bmatrix} \cos\theta\\\sin\theta \end{bmatrix}\]
+
+\pause
+El vector \(\vec{y_B}\) en sistema \refsys{A}: \[ \vec{y_B} = -\sin\theta \vec{x_A} +\cos\theta\vec{y_A} =
+\begin{bmatrix}\vec{x_A} & \vec{y_A} \end{bmatrix} \begin{bmatrix} -\sin\theta\\\cos\theta \end{bmatrix}\]
+\[ \vecref{y_B}{A} = -\sin\theta \vecref{x_A}{A} +\cos\theta\vecref{y_A}{A} = \begin{bmatrix} -\sin\theta\\\cos\theta \end{bmatrix}\]
+
+\pause
+
+El punto \(P\) en sistema \refsys{A}: \(p_A = O_A + v_A\), donde:
+
+\[ \vec{v}_A = \vec{t}_{ab} + \vec{v}_B = \vec{t}_{ab} + \pref{p}{B}_x \vec{x_B} + \pref{p}{B}_y \vec{y_B}\]
+\pause
+\[\vecref{v_A}{A} &= \vecref{t_{ab}}{A} + \pref{p}{B}_x \vecref{x_B}{A} + \pref{p}{B}_y \vecref{y_B}{A}
+= \vecref{t_{ab}}{A} + \begin{bmatrix} \vecref{x_B}{A} & \vecref{y_B}{A} \end{bmatrix} \begin{bmatrix} \pref{p}{B}_x\\ \pref{p}{B}_y \end{bmatrix}\]
+\end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}[label={sec:org2e89bd3}]{Mapa exponencial}
+
+
+
+\begin{frame}[label={sec:org089a82c}]{Pose en 2D}
+\begin{columns}
+\begin{column}{0.3\columnwidth}
+\begin{center}
+\includegraphics[height=0.6\textheight]{../figures/2d-transform}
+\end{center}
+\end{column}
+
+\begin{column}{0.7\columnwidth}
+\footnotesize
+
+
+El punto \(P\) en sistema \refsys{A}: \(p_A = O_A + v_A\), donde:
+
+\[ \vec{v}_A = \vec{t}_{ab} + \vec{v}_B = \vec{t}_{ab} + \pref{p}{B}_x \vec{x_B} + \pref{p}{B}_y \vec{y_B}\]
+\[\vecref{v_A}{A} &= \vecref{t_{ab}}{A} + \pref{p}{B}_x \vecref{x_B}{A} + \pref{p}{B}_y \vecref{y_B}{A}
+= \vecref{t_{ab}}{A} + \begin{bmatrix} \vecref{x_B}{A} & \vecref{y_B}{A} \end{bmatrix} \begin{bmatrix} \pref{p}{B}_x\\ \pref{p}{B}_y \end{bmatrix}\]
+
+\pause
+
+\[ = \vecref{t_{ab}}{A} + \begin{bmatrix} \cos\theta & -\sin\theta\\\sin\theta & \cos\theta \end{bmatrix} \begin{bmatrix} \pref{p}{B}_x\\ \pref{p}{B}_y \end{bmatrix}\]
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[label={sec:org81e01e1}]{Ejemplo}
+\begin{columns}
+\begin{column}{0.6\columnwidth}
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+
+\def\xxa{4}
+\def\yya{4}
+\def\bx{4}
+\def\by{2}
+\def\thth{30}
+\pgfmathsetmacro{\cth}{cos(\thth)}
+\pgfmathsetmacro{\sth}{sin(\thth)}
+\pgfmathsetmacro{\xxb}{\cth*(\xxa-\bx) + \sth*(\yya-\by)}
+\pgfmathsetmacro{\yyb}{-\sth*(\xxa-\bx) + \cth*(\yya-\by)}
+
+\draw[step=1cm, gray, very thin] (-2, -2) grid (12,12);
+
+\refframe{4}{$x_A$}{$y_A$}{blue!80!black}
+
+\begin{scope}[xshift = \bx cm, yshift=\by cm, rotate=\thth]
+  \draw[step=1cm, red!40!gray, very thin] (-2, -2) grid (8,8);
+  \refframe{4}{$x_B$}{$y_B$}{red!80!black}
+  \node[red!80!black, pin={[red!80!black] 30:{($1$, $\sqrt{3}$)}}, circle, fill, inner sep=1pt] at (\xxb cm, \yyb cm) {};
+\end{scope}
+
+\draw[->] (7, 2) arc[radius=3cm, start angle=0, end angle=30] node[right, pos=0.5] {$30^\circ$};
+
+%\node[red!80!black, pin=30:{}, circle, fill, inner sep=1pt] at (\xxa cm, \yya cm) {};
+\end{tikzpicture}
+\end{center}
+\end{column}
+
+
+\begin{column}{0.4\columnwidth}
+\small
+Determine la matriz de rotación \(R_{ab}\) y la translación \(t_{ab}\) que definen la transformación entre \refsys{B} y \refsys{A}. Verifique que
+\begin{align*}
+^Ap &= \begin{bmatrix}4\\4\end{bmatrix} = R_{ab} ^Bp + t_{ab}\\
+&=  R_{ab}\begin{bmatrix}1\\\sqrt{3}\end{bmatrix} + t_{ab}
+\end{align*}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[label={sec:org791122f}]{Ejercicio}
+\begin{columns}
+\begin{column}{0.6\columnwidth}
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+
+\def\xxa{4}
+\def\yya{4}
+\def\bx{4}
+\def\by{6}
+\def\thth{-60}
+\pgfmathsetmacro{\cth}{cos(\thth)}
+\pgfmathsetmacro{\sth}{sin(\thth)}
+\pgfmathsetmacro{\xxb}{\cth*(\xxa-\bx) + \sth*(\yya-\by)}
+\pgfmathsetmacro{\yyb}{-\sth*(\xxa-\bx) + \cth*(\yya-\by)}
+
+\draw[step=1cm, gray, very thin] (-2, -2) grid (12,12);
+
+\refframe{4}{$x_A$}{$y_A$}{blue!80!black}
+
+\begin{scope}[xshift = \bx cm, yshift=\by cm, rotate=\thth]
+  \draw[step=1cm, red!40!gray, very thin] (-2, -2) grid (8,8);
+  \refframe{4}{$x_B$}{$y_B$}{red!80!black}
+  \node[red!80!black, pin={[red!80!black] -100:{( $\sqrt{3}$, $-1$)}}, circle, fill, inner sep=1pt] at (\xxb cm, \yyb cm) {};
+\end{scope}
+
+\draw[->] (7, 6) arc[radius=3cm, start angle=0, end angle=-60] node[right, pos=0.5] {$-60^\circ$};
+
+%\node[red!80!black, pin=30:{}, circle, fill, inner sep=1pt] at (\xxa cm, \yya cm) {};
+\end{tikzpicture}
+\end{center}
+\end{column}
+
+\begin{column}{0.4\columnwidth}
+Determine la matriz de rotación \(R_{ab}\) y la translación \(t_{ab}\) que definen la transformación entre \refsys{B} y \refsys{A}. Verifique que
+\begin{align*}
+^Ap &= \begin{bmatrix}4\\4\end{bmatrix} = R_{ab} ^Bp + t_{ab}\\
+&=  R_{ab}\begin{bmatrix}\sqrt{3}\\-1\end{bmatrix} + t_{ab}
+\end{align*}
+\end{column}
+\end{columns}
 \end{frame}
 
 
-\begin{frame}[label={sec:org9de0f39}]{Pose en 3D}
-\end{frame}
-
-\begin{frame}[label={sec:org8dda86b}]{Coordenadas homogéneas}
+\begin{frame}[label={sec:org5a424cb}]{Programar}
 \end{frame}
 \end{document}

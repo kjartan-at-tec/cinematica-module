@@ -9,16 +9,16 @@
   \node at (#1/2, 1.3*#2) {#4};}
 
 \newcommand*{\slidelink}[4]{%
-  \draw[thick, color=#3, rounded corners] (-3pt, -#2/2) rectangle (#1+3pt, #2/2);
-  \draw[rounded corners] (0, -1pt) rectangle (#1, 1pt) ;
+  \draw[thick, color=#3, rounded corners] (-5pt, -#2/2) rectangle (#1+3pt, #2/2);
+  \draw[] (0, -1pt) rectangle (#1, 1pt) ;
   \node at (#1/2, 1.3*#2) {#4};}
 
 \newcommand*{\tool}[2]{%
   \draw[ultra thick, color=#2] (0,0) to (#1, 0);}
 
-\newcommand*{\refframe}[3]{%
-  \draw[->] (0,0) to (#1, 0) node[right]{#2};
-  \draw[->] (0,0) to (0, #1) node[above]{#3};} 
+\newcommand*{\refframe}[4]{%
+  \draw[thick, ->, #4] (0,0) to (#1, 0) node[right]{#2};
+  \draw[thick, ->, #4] (0,0) to (0, #1) node[above]{#3};} 
 
 \newcommand*{\robotbase}[2]{%
     \draw[thick, black!60, rounded corners=8pt] (-#1,-#2)-- (-#1, 0) --
@@ -29,12 +29,13 @@
 
 \begin{document}
 
-\pgfmathsetmacro{\qone}{0.9}
+\pgfmathsetmacro{\qone}{0.8}
 \pgfmathsetmacro{\qtwo}{30}
+\pgfmathsetmacro{\Lslide}{1.6}
 \pgfmathsetmacro{\Lone}{2}
 \pgfmathsetmacro{\Ltwo}{1}
 \pgfmathsetmacro{\Ltwostart}{\Lone}
-\pgfmathsetmacro{\lwidth}{0.2}
+\pgfmathsetmacro{\lwidth}{0.22}
 \pgfmathsetmacro{\lwidthtwo}{0.16}
 
 \begin{tikzpicture}[scale=2,]
@@ -44,16 +45,18 @@
   \draw[->] (-1, 0) to (5,0) node[right] {$x$};
   \draw[->] (0,-1) to (0,3) node[above] {$y$};
 
-  \slidelink{\Lone cm}{\lwidth}{black!80}{}
+  \slidelink{\Lslide cm}{\lwidth}{black!80}{}
   \begin{scope}[xshift=\qone cm]
     \link{\Lone cm}{\lwidthtwo}{blue!80!black}{}
     %\draw[dashed] (\Lone/2, 0) to (1.5*\Lone, 0);
 
     \draw[dashed] (0, 0) to (0, -0.6);
     
-    \draw[<->] (-\qone cm, -0.5) -- node[below] {$q_1$} ++(\qone, 0);
+    \draw[<->] (-\qone cm, -0.5) -- node[below] {$\theta_1$} ++(\qone, 0);
 
-    \draw[->] (\Lone + 0.7, 0) arc[radius=7mm, start angle=0, end angle=\qtwo] node[pos=0.5, right] {$q_2$};
+    \draw[->] (\Lone + 0.7, 0) arc[radius=7mm, start angle=0, end angle=\qtwo] node[pos=0.5, right] {$\theta_2$};
+
+        \refframe{0.8 cm}{$x_{l1}$}{$y_{l1}$}{blue!80!black}
 
     \begin{scope}[xshift=\Ltwostart cm, rotate=\qtwo,]
       
@@ -61,8 +64,10 @@
 
 
       \begin{scope}[xshift=\Ltwo cm]
-        %\tool{0.3 cm}{red!black!80}
-        \refframe{0.8 cm}{$x_e$}{$y_e$}
+        \refframe{0.8 cm}{$x_e$}{$y_e$}{green!60!black}
+      \end{scope}
+      \begin{scope}[xshift=-\Lone cm]
+        \refframe{0.8 cm}{$x_{l2}$}{$y_{l2}$}{green!60!black}
       \end{scope}
 
     \end{scope}

@@ -1,0 +1,78 @@
+\documentclass[border=10pt,varwidth]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+
+  \newcommand*{\link}[4]{%
+  \draw[thick, color=#3, rounded corners] (-3pt, -#2/2) rectangle (#1+3pt, #2/2);
+  \draw (0,0) circle[radius=1pt];
+  \draw (#1, 0) circle[radius=1pt];
+  \node at (#1/2, 1.3*#2) {#4};}
+
+\newcommand*{\slidelink}[4]{%
+  \draw[thick, color=#3, rounded corners] (-4pt, -#2/2) rectangle (#1+3pt, #2/2);
+  \draw[] (-2pt, -1pt) rectangle (#1, 1pt) ;
+  \node at (#1/2, 1.3*#2) {#4};}
+
+\newcommand*{\tool}[2]{%
+  \draw[ultra thick, color=#2] (0,0) to (#1, 0);}
+
+\newcommand*{\refframe}[4]{%
+  \draw[->, thick, #4] (0,0) to (#1, 0) node[right]{#2};
+  \draw[->, thick, #4] (0,0) to (0, #1) node[above]{#3};} 
+
+\newcommand*{\robotbase}[2]{%
+    \draw[thick, black!40, rounded corners=8pt] (-#1,-#2)-- (-#1, 0) --
+        (0,#2)--(#1,0)--(#1,-#2);
+    \draw (-0.3,-#2)-- (0.3,-#2);
+    \fill[pattern=north east lines] (-0.3,-0.3) rectangle (0.3,-#2);
+  }
+
+\begin{document}
+
+\pgfmathsetmacro{\qone}{0.9}
+\pgfmathsetmacro{\qtwo}{30}
+\pgfmathsetmacro{\Lslide}{1.6}
+\pgfmathsetmacro{\Lone}{2}
+\pgfmathsetmacro{\Ltwo}{1}
+\pgfmathsetmacro{\Ltwostart}{\Lone}
+\pgfmathsetmacro{\lwidth}{0.22}
+\pgfmathsetmacro{\lwidthtwo}{0.16}
+
+\begin{tikzpicture}[scale=2,]
+
+  \robotbase{0.2cm}{0.2cm}
+
+  \draw[->] (-1, 0) to (5,0) node[right] {$x$};
+  \draw[->] (0,-1) to (0,3) node[above] {$y$};
+
+  \begin{scope}[rotate=\qtwo]
+      
+  \slidelink{\Lslide cm}{\lwidth}{black!80}{}
+
+  \foreach \xx/\clr in {0/red!50!white, \qone/red!70!black} {
+  %\foreach \xx/\clr in {0/red!70!black} {
+  \begin{scope}[xshift=\xx cm]
+    \link{\Lone cm}{\lwidthtwo}{\clr}{}
+    %\draw[dashed] (\Lone/2, 0) to (1.5*\Lone, 0);
+
+    \draw[dashed] (0, 0) to (0, -0.6);
+
+    \begin{scope}[xshift=\Lone cm]
+        %\tool{0.3 cm}{red!black!80}
+        \refframe{0.5 cm}{$x_e$}{$y_e$}{\clr}
+      \end{scope}
+
+      \begin{scope}[rotate=-\qtwo]
+      \refframe{0.5 cm}{$x_l$}{$y_l$}{\clr}
+    \end{scope}
+  \end{scope}
+  }
+
+    
+  \draw[<->] (0, -0.5) -- node[below] {$\theta_1$} ++(\qone, 0);
+
+
+    \end{scope}
+
+  \end{tikzpicture}    
+\end{document}

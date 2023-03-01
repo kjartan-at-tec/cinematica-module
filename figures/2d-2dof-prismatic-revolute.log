@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.6.21)  31 JAN 2022 14:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.6.21)  1 FEB 2022 08:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -427,16 +427,16 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 44.
+(Font)              <7> on input line 45.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 44.
+(Font)              <5> on input line 45.
 
-Overfull \hbox (9.21414pt too wide) in paragraph at lines 75--76
+Overfull \hbox (9.21414pt too wide) in paragraph at lines 80--81
 [][] 
  []
 
 
-Overfull \hbox (9.21414pt too wide) detected at line 76
+Overfull \hbox (9.21414pt too wide) detected at line 81
 [][] 
  []
 
@@ -445,18 +445,18 @@ Overfull \hbox (9.21414pt too wide) detected at line 76
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 (./2d-2dof-prismatic-revolute.aux) ) 
 Here is how much of TeX's memory you used:
- 12215 strings out of 481239
- 252010 string characters out of 5920377
- 466450 words of memory out of 5000000
- 27276 multiletter control sequences out of 15000+600000
+ 12223 strings out of 481239
+ 252130 string characters out of 5920377
+ 467456 words of memory out of 5000000
+ 27284 multiletter control sequences out of 15000+600000
  532338 words of font info for 24 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,9n,61p,432b,941s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,9n,61p,432b,968s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmr7.pfb>
-Output written on 2d-2dof-prismatic-revolute.pdf (1 page, 25389 bytes).
+Output written on 2d-2dof-prismatic-revolute.pdf (1 page, 26018 bytes).
 PDF statistics:
  24 PDF objects out of 1000 (max. 8388607)
  16 compressed objects within 1 object stream
